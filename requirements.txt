@@ -1,0 +1,6 @@
+torch
+transformers
+openai-whisper
+spacy
+soundfile
+pyyaml

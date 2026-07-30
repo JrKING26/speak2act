@@ -1,0 +1,7 @@
+intents:
+  - name: set_reminder
+    examples: ["remind me to call mom", "set a reminder for tomorrow"]
+  - name: play_music
+    examples: ["play some jazz", "start music"]
+  - name: open_app
+    examples: ["open calculator", "launch browser"]
