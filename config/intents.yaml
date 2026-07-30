@@ -1,0 +1,14 @@
+# Example intent definitions
+
+intents:
+  - name: greet
+    examples:
+      - "hello"
+      - "hi"
+    action: greet_user
+
+  - name: stop
+    examples:
+      - "stop"
+      - "cancel"
+    action: stop_agent

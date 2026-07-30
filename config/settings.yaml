@@ -1,0 +1,12 @@
+# Example settings for Speak2Act
+
+asr:
+  engine: "whisper"
+  model: "small"
+  sample_rate: 16000
+
+nlp:
+  language_model: "en_core_web_sm"
+
+executor:
+  dry_run: true
