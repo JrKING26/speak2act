@@ -1,8 +1,8 @@
 # main.py
 
-from src.audio.asr import transcribe_audio
-from src.nlp.intent import detect_intent
-from src.executor.executor import execute_action
+from src.service.audio_service import transcribe_audio
+from src.service.intent_detection import detect_intent
+from src.service.executor import execute_action
 
 def main():
     """
