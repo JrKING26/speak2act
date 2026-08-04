@@ -1,30 +1,40 @@
-# main.py
+import argparse
 
-from src.service.audio_service import transcribe_audio
-from src.service.intent_detection import detect_intent
-from src.service.executor import execute_action
+from src.audio.asr import AudioASR
+from src.nlp.intent import detect_intent
+from src.executor.executor import execute_action
 
-def main():
-    """
-    End-to-end pipeline:
-    speech -> text -> intent -> action
-    """
-    print("=== Speak2Act Demo ===")
+def run_agent():
+    asr = AudioASR()
+    text = asr.transcribe()   # Google first, Whisper fallback
+    print("You said:", text)
 
-    # For now, simulate audio input with a file path
-    file_path = "sample.wav"
-
-    # Step 1: Speech to text
-    text = transcribe_audio(file_path)
-    print(f"[ASR] Transcribed: {text}")
-
-    # Step 2: Text to intent
+    # Step 2: NLP intent detection
     intent = detect_intent(text)
-    print(f"[NLP] Detected intent: {intent}")
+    print("Detected intent:", intent)
 
-    # Step 3: Intent to action
+    # Step 3: Execute action
     result = execute_action(intent, text)
-    print(f"[Executor] Result: {result}")
+    print("Agent:", result)
+
+
+def verify_whisper(audio_file=None):
+    asr = AudioASR()
+    success = asr.verify_whisper(test_audio_file=audio_file)
+    if success:
+        print("Whisper verification succeeded.")
+    else:
+        print("Whisper verification failed.")
+
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Run Speak2Act agent or verify Whisper.")
+    parser.add_argument("--verify-whisper", nargs="?", const="", help="Verify Whisper; optionally provide an audio file path.")
+    args = parser.parse_args()
+
+    if args.verify_whisper is not None:
+        audio_file = args.verify_whisper or None
+        verify_whisper(audio_file=audio_file)
+    else:
+        run_agent()
+
