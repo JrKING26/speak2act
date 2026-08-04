@@ -11,6 +11,23 @@ class AudioASR:
         self.microphone = sr.Microphone()
         self.whisper_model = whisper.load_model("base")
 
+    def verify_whisper(self, test_audio_file=None):
+        """Verify that Whisper is loaded and optionally transcribe a sample audio file."""
+        try:
+            if not self.whisper_model:
+                print("Whisper model is not loaded.")
+                return False
+
+            print("Whisper model loaded:", type(self.whisper_model).__name__)
+            if test_audio_file:
+                print("Verifying transcription of:", test_audio_file)
+                result = self.whisper_model.transcribe(test_audio_file)
+                print("Verification transcription result:", result.get("text", "").strip())
+            return True
+        except Exception as exc:
+            print(f"Whisper verification failed: {exc}")
+            return False
+
     def _listen(self, timeout=5, phrase_time_limit=10):
         with self.microphone as source:
             print("🎙️ Listening...")
@@ -41,6 +58,7 @@ class AudioASR:
 
     def transcribe_whisper(self, filename="fallback.wav", timeout=5, phrase_time_limit=10):
         try:
+            print("🎧 Listening with Whisper for offline detection...")
             audio = self._listen(timeout=timeout, phrase_time_limit=phrase_time_limit)
             with open(filename, "wb") as f:
                 f.write(audio.get_wav_data())
